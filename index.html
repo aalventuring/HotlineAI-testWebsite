@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotline AI — Your leads answered in 60 seconds.</title>
+  <meta name="description" content="AI BDC agent for automotive dealerships. Every inbound lead answered in under 60 seconds, full SMS conversation, appointment booked." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0A0A0A;
+      --bg-alt:    #111111;
+      --card:      #161616;
+      --elevated:  #1E1E1E;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #E85A3A;
+      --accent-lt: #FF6B4A;
+      --text:      #F2F2F2;
+      --muted:     #F2F2F2;
+      --green:     #22C55E;
+      --syne:      'Syne', 'Arial Black', sans-serif;
+      --manrope:   'Manrope', 'Helvetica Neue', sans-serif;
+      --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+      --radius:    20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--manrope); font-size: 17px; line-height: 1.5;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── GRAIN ─────────────────────────────────────── */
+    .grain {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* ─── ANNOUNCEMENT BAR ───────────────────────────── */
+    .announcement {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 11px 0; text-align: center;
+    }
+    .announcement p {
+      font-size: 14px; font-weight: 500; color: var(--text);
+      letter-spacing: -0.1px;
+    }
+    .announcement a { color: var(--accent); font-weight: 600; }
+    .announcement a:hover { text-decoration: underline; }
+
+    /* ─── NAV ────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 500;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10,10,10,0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 9px; }
+    .nav-logo svg { width: 26px; height: 26px; }
+    .nav-wm { font-family: var(--syne); font-weight: 800; font-size: 14px; letter-spacing: -0.4px; }
+    .nav-wm em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-search { background: none; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s; }
+    .nav-search:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 18px; border-radius: 980px;
+      font-size: 13px; font-weight: 700; letter-spacing: -0.1px;
+      transition: background .2s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--accent-lt); transform: scale(1.02); color: #fff; }
+
+    /* ─── PAGE WIDTH ─────────────────────────────────── */
+    .page { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    /* ─── SHIMMER BACKGROUND TEXT ───────────────────── */
+    .shimmer-bg-wrap {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: flex-start;
+      pointer-events: none; user-select: none;
+      overflow: hidden;
+    }
+    .shimmer-bg-text {
+      font-family: var(--syne); font-weight: 800;
+      font-size: clamp(100px, 14vw, 190px);
+      letter-spacing: -8px; line-height: 1;
+      white-space: nowrap;
+      /* Port of ShimmerText component: background-clip text + animated gradient sweep */
+      background: linear-gradient(
+        90deg,
+        rgba(232,90,58,0.07) 0%,
+        rgba(232,90,58,0.07) 30%,
+        rgba(255,255,255,0.18) 46%,
+        rgba(255,200,180,0.22) 50%,
+        rgba(255,255,255,0.18) 54%,
+        rgba(232,90,58,0.07) 70%,
+        rgba(232,90,58,0.07) 100%
+      );
+      background-size: 250% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* Initial position: shimmer is off to the right (mirrors backgroundPositionX: "250%") */
+      background-position-x: 250%;
+      /* Total cycle = 1.5s sweep + 1.5s pause = 3s. Sweep occupies first 50% of cycle. */
+      animation: shimmer-sweep 3s linear 1.5s infinite;
+    }
+    @keyframes shimmer-sweep {
+      /* 0–50%: sweep crosses the text (1.5s of motion) */
+      0%   { background-position-x: 160%; }
+      50%  { background-position-x: -60%; }
+      /* 50–100%: hold off-screen left (1.5s pause = repeatDelay equivalent) */
+      50.01% { background-position-x: 160%; }
+      100% { background-position-x: 160%; }
+    }
+
+    /* ─── STORE TITLE ────────────────────────────────── */
+    .store-title {
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0 32px;
+      position: relative; /* needed so shimmer-bg-wrap positions relative to this */
+    }
+    .store-title-inner {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 40px; position: relative; z-index: 1; /* sit above the shimmer bg */
+    }
+    .store-name {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 52px; letter-spacing: -2.5px; line-height: 1;
+      color: var(--text);
+    }
+    .store-name em { color: var(--accent); font-style: normal; }
+    .store-tagline { max-width: 380px; }
+    .store-tagline p { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .store-tagline-links { display: flex; flex-direction: column; gap: 6px; }
+    .store-link {
+      font-size: 15px; font-weight: 600; color: var(--accent);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .store-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ─── CATEGORY NAV ───────────────────────────────── */
+    .cat-nav {
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .cat-nav::-webkit-scrollbar { display: none; }
+    .cat-nav-inner {
+      display: flex; align-items: center; gap: 0;
+      padding: 0 40px; max-width: 1200px; margin: 0 auto;
+    }
+    .cat-link {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      padding: 14px 18px; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+      display: block;
+    }
+    .cat-link:hover, .cat-link.active { color: var(--text); border-bottom-color: var(--accent); }
+
+    /* ─── SECTION CHROME ─────────────────────────────── */
+    .section-head {
+      padding: 56px 0 32px;
+    }
+    .section-eyebrow {
+      font-size: 22px; font-weight: 700; color: var(--text);
+      letter-spacing: -0.4px; line-height: 1.3; margin-bottom: 5px;
+      font-family: var(--syne);
+    }
+    .section-caption {
+      font-size: 17px; color: var(--muted); font-weight: 400;
+    }
+    .section-sep { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ─── FEATURED GRID (3 product cards) ───────────── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      padding-bottom: 56px;
+    }
+    /* First card spans 2 rows — taller */
+    .prod-card {
+      background: var(--card); border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+      cursor: default;
+      border: 1px solid var(--border);
+    }
+    .prod-card:hover { transform: scale(1.012); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .prod-card.tall { grid-row: span 2; }
+
+    .prod-visual {
+      width: 100%; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prod-card.tall .prod-visual { height: 380px; }
+    .prod-card:not(.tall) .prod-visual { height: 240px; }
+
+    /* Visual backgrounds */
+    .vis-orange {
+      background: linear-gradient(145deg, #1a0d09 0%, #200e0a 50%, #100505 100%);
+    }
+    .vis-orange::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(232,90,58,.25) 0%, transparent 65%);
+    }
+    .vis-dark {
+      background: linear-gradient(145deg, #0e0e0e 0%, #161616 100%);
+    }
+    .vis-green {
+      background: linear-gradient(145deg, #091409 0%, #0d1a0d 100%);
+    }
+    .vis-green::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(34,197,94,.15) 0%, transparent 65%);
+    }
+
+    /* Big stat display inside visual */
+    .vis-stat {
+      position: relative; z-index: 1; text-align: center;
+    }
+    .vis-stat-num {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 80px; letter-spacing: -4px; line-height: 1;
+      color: var(--text);
+    }
+    .vis-stat-num em { color: var(--accent); font-style: normal; }
+    .vis-stat-num.green em { color: var(--green); }
+    .vis-stat-sub {
+      font-size: 13px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-top: 8px;
+    }
+
+    /* SMS thread inside visual */
+    .vis-sms {
+      position: relative; z-index: 1; width: 100%; padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .vis-sms-time { font-size: 10px; color: var(--muted); text-align: center; font-weight: 600; letter-spacing: 0.5px; }
+    .bubble {
+      font-size: 13px; line-height: 1.55; padding: 10px 14px; border-radius: 14px;
+      max-width: 78%;
+    }
+    .bubble-in { background: var(--elevated); color: var(--text); align-self: flex-start; border-radius: 14px 14px 14px 4px; }
+    .bubble-out { background: var(--accent); color: #fff; align-self: flex-end; border-radius: 14px 14px 4px 14px; }
+    .vis-badge {
+      align-self: flex-end;
+      background: rgba(232,90,58,.12); border: 1px solid rgba(232,90,58,.2);
+      color: var(--accent); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.5px; padding: 3px 9px; border-radius: 6px; margin-top: 2px;
+    }
+
+    /* CRM log inside visual */
+    .vis-log {
+      position: relative; z-index: 1; width: 100%; padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .log-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: 8px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+    }
+    .log-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .log-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .log-dot.orange { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .log-dot.gray { background: #333; }
+    .log-label { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+    .log-time { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+    /* Card info area (below visual) */
+    .prod-info { padding: 22px 24px 26px; }
+    .prod-eyebrow { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; margin-bottom: 6px; }
+    .prod-name {
+      font-family: var(--syne); font-weight: 700; font-size: 22px;
+      letter-spacing: -0.6px; color: var(--text); margin-bottom: 9px; line-height: 1.25;
+    }
+    .prod-desc { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+    .prod-link { font-size: 15px; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .prod-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ─── HORIZONTAL SCROLL SECTION ─────────────────── */
+    .picks-section { padding-bottom: 56px; }
+    .picks-scroll-wrapper { overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+    .picks-scroll-wrapper::-webkit-scrollbar { display: none; }
+    .picks-track {
+      display: flex; gap: 12px;
+      min-width: max-content; padding: 4px 2px;
+    }
+    .pick-card {
+      width: 320px; flex-shrink: 0;
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); overflow: hidden;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+    .pick-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.4); }
+    .pick-visual {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .pick-num {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 64px; letter-spacing: -3px; line-height: 1;
+      position: relative; z-index: 1;
+    }
+    .pick-num em { font-style: normal; color: var(--accent); }
+    .pick-info { padding: 20px 22px 26px; }
+    .pick-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .pick-title { font-family: var(--syne); font-weight: 700; font-size: 17px; letter-spacing: -0.3px; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+    .pick-desc { font-size: 15px; color: var(--muted); line-height: 1.65; }
+
+    /* ─── TWO-UP FEATURE SECTION ─────────────────────── */
+    .twoup { padding-bottom: 56px; }
+    .twoup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .twoup-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); overflow: hidden;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+    .twoup-card:hover { transform: scale(1.01); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .twoup-visual {
+      height: 220px; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .twoup-info { padding: 24px 28px 28px; }
+    .twoup-eyebrow { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+    .twoup-name { font-family: var(--syne); font-weight: 700; font-size: 22px; letter-spacing: -0.6px; color: var(--text); margin-bottom: 10px; }
+    .twoup-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .twoup-link { font-size: 15px; color: var(--accent); font-weight: 600; }
+    .twoup-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Large text inside twoup visual */
+    .vis-large-text {
+      position: relative; z-index: 1; text-align: center; padding: 0 20px;
+    }
+    .vis-large-text .big {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 48px; letter-spacing: -2.5px; color: var(--text); line-height: 1;
+    }
+    .vis-large-text .big em { color: var(--accent); font-style: normal; }
+    .vis-large-text .small { font-size: 12px; color: var(--muted); margin-top: 8px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ─── DIFFERENCE TILES (Apple Store difference) ─── */
+    .diff-section { padding-bottom: 56px; }
+    .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .diff-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 32px 28px 36px;
+      transition: border-color .2s, transform .2s;
+    }
+    .diff-card:hover { border-color: rgba(232,90,58,.3); transform: translateY(-2px); }
+    .diff-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(232,90,58,.1); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .diff-title { font-family: var(--syne); font-weight: 700; font-size: 19px; letter-spacing: -0.4px; color: var(--text); margin-bottom: 12px; }
+    .diff-body { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+    .diff-link { font-size: 15px; color: var(--accent); font-weight: 600; }
+    .diff-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ─── HELP SECTION ───────────────────────────────── */
+    .help-section { padding-bottom: 56px; }
+    .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .help-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 40px 36px;
+      transition: border-color .2s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .help-card:hover { border-color: rgba(232,90,58,.25); transform: translateY(-2px); }
+    .help-card.primary { background: var(--accent); border-color: transparent; }
+    .help-card.primary:hover { border-color: transparent; }
+    .help-eyebrow { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .help-card.primary .help-eyebrow { color: rgba(255,255,255,.6); }
+    .help-title { font-family: var(--syne); font-weight: 800; font-size: 26px; letter-spacing: -1px; color: var(--text); margin-bottom: 12px; line-height: 1.15; }
+    .help-card.primary .help-title { color: #fff; }
+    .help-body { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; max-width: 360px; }
+    .help-card.primary .help-body { color: rgba(255,255,255,.75); }
+    .help-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--text); color: var(--bg);
+      padding: 12px 22px; border-radius: 980px;
+      font-size: 14px; font-weight: 700; letter-spacing: -0.1px;
+      transition: transform .2s, background .2s;
+    }
+    .help-cta:hover { transform: scale(1.03); background: #fff; color: var(--bg); }
+    .help-cta.outline {
+      background: transparent; color: var(--accent);
+      border: 1.5px solid rgba(232,90,58,.3);
+    }
+    .help-cta.outline:hover { background: rgba(232,90,58,.08); border-color: var(--accent); }
+
+    /* ─── PROMO TILES (Who it's for) ─────────────────── */
+    .promo-section { padding-bottom: 56px; }
+    .promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .promo-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); overflow: hidden;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+    .promo-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.4); }
+    .promo-visual {
+      height: 140px; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 20px;
+    }
+    .promo-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(232,90,58,.12); display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .promo-info { padding: 0 22px 24px; }
+    .promo-title { font-family: var(--syne); font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: var(--text); margin-bottom: 9px; }
+    .promo-body { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+    .promo-link { font-size: 15px; color: var(--accent); font-weight: 600; }
+    .promo-link:hover { text-decoration: underline; }
+
+    /* ─── QUICK LINKS ────────────────────────────────── */
+    .quick-links {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .quick-links-inner {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .quick-link {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 980px; padding: 11px 20px;
+      font-size: 13px; font-weight: 600; color: var(--text);
+      transition: border-color .2s, color .2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .quick-link:hover { border-color: rgba(232,90,58,.4); color: var(--accent); }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 40px;
+      background: var(--card);
+    }
+    .footer-top {
+      padding-bottom: 20px; margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-top p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .footer-top a { color: var(--accent); font-weight: 500; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo svg { width: 24px; height: 24px; }
+    .footer-wm { font-family: var(--syne); font-weight: 800; font-size: 13px; letter-spacing: -0.3px; }
+    .footer-wm em { color: var(--accent); font-style: normal; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-legal { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .footer-legal p { font-size: 11px; color: #3a3a3a; line-height: 1.8; }
+    .footer-legal a { color: #555; }
+
+    /* ─── LIVE DOT ───────────────────────────────────── */
+    .live-dot {
+      display: inline-block; width: 7px; height: 7px; background: var(--green);
+      border-radius: 50%; box-shadow: 0 0 6px var(--green);
+      animation: pulse 1.8s ease-in-out infinite; vertical-align: middle;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 8px var(--green);}50%{opacity:.6;box-shadow:0 0 3px var(--green);} }
+
+    /* ─── TEXT COLOR CYCLE (ported from text-color.tsx) ── */
+    /* Exact keyframe names match the component's animate-gradient-* classes  */
+
+    .tc-section {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .tc-inner {
+      padding: 72px 40px;
+      position: relative;
+      /* Mirrors: [mask-image:radial-gradient(200rem_24rem_at_center,white,transparent)] */
+      -webkit-mask-image: radial-gradient(ellipse 88% 100% at 50% 50%, black 30%, transparent 100%);
+      mask-image: radial-gradient(ellipse 88% 100% at 50% 50%, black 30%, transparent 100%);
+      /* Border matches the component's border-slate-200/800 */
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    /* Plus icons — mirrors <Plus className="absolute -left-4 -top-4 ..."> */
+    .tc-plus {
+      position: absolute; width: 22px; height: 22px;
+      color: var(--accent);
+    }
+    .tc-plus::before, .tc-plus::after {
+      content: ''; position: absolute; background: var(--accent);
+    }
+    .tc-plus::before { width: 100%; height: 1.5px; top: 50%; transform: translateY(-50%); }
+    .tc-plus::after  { height: 100%; width: 1.5px;  left: 50%; transform: translateX(-50%); }
+    .tc-plus.tl { top: -11px;    left: -11px; }
+    .tc-plus.tr { top: -11px;    right: -11px; }
+    .tc-plus.bl { bottom: -11px; left: -11px; }
+    .tc-plus.br { bottom: -11px; right: -11px; }
+
+    /* Wrapper h — mirrors tracking-tighter flex flex-col text-center font-extrabold */
+    .tc-h {
+      font-family: var(--syne); font-weight: 800;
+      font-size: clamp(52px, 10.5vw, 128px);
+      letter-spacing: -0.05em; line-height: 1.05;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      user-select: none;
+    }
+    /* Each word span — mirrors the outer <span data-content="…"> */
+    .tc-word {
+      position: relative; display: block;
+    }
+    /* ::before = the background layer (animate-gradient-background-X)
+       content: attr(data-content) mirrors before:content-[attr(data-content)] */
+    .tc-word::before {
+      content: attr(data-content);
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(90deg, var(--g-bg-from), var(--g-bg-to));
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .tc-word-1 { --g-bg-from: rgba(232,90,58,0.18); --g-bg-to: rgba(255,140,106,0.12); }
+    .tc-word-2 { --g-bg-from: rgba(255,107,74,0.15); --g-bg-to: rgba(245,240,232,0.12); }
+    .tc-word-3 { --g-bg-from: rgba(245,245,245,0.12); --g-bg-to: rgba(232,90,58,0.18); }
+
+    /* Foreground span — mirrors inner <span className="animate-gradient-foreground-X bg-gradient-to-r bg-clip-text text-transparent"> */
+    .tc-fg {
+      display: block; position: relative; z-index: 1;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 0 8px;
+    }
+    .tc-fg-1 { background-image: linear-gradient(90deg, #E85A3A, #FF8C6A); }
+    .tc-fg-2 { background-image: linear-gradient(90deg, #FF6B4A, #F5E8E0); }
+    .tc-fg-3 { background-image: linear-gradient(90deg, #F5F5F5, #E85A3A); }
+
+    /* ── Foreground keyframes (from gradient-foreground-1/2/3) ── */
+    @keyframes tc-fg-1 {
+      from, 16.667%, to { opacity: 1; }
+      33.333%, 83.333%  { opacity: 0; }
+    }
+    @keyframes tc-fg-2 {
+      from, to           { opacity: 0; }
+      33.333%, 50%       { opacity: 1; }
+      16.667%, 66.667%   { opacity: 0; }
+    }
+    @keyframes tc-fg-3 {
+      from, 50%, to      { opacity: 0; }
+      66.667%, 83.333%   { opacity: 1; }
+    }
+    /* ── Background keyframes (from gradient-background-1/2/3) ── */
+    @keyframes tc-bg-1 {
+      from, 16.667%, to  { opacity: 0; }
+      25%, 91.667%       { opacity: 1; }
+    }
+    @keyframes tc-bg-2 {
+      from, to           { opacity: 1; }
+      33.333%, 50%       { opacity: 0; }
+      25%, 58.333%       { opacity: 1; }
+    }
+    @keyframes tc-bg-3 {
+      from, 58.333%, 91.667%, to { opacity: 1; }
+      66.667%, 83.333%           { opacity: 0; }
+    }
+
+    /* All animations paused until section scrolls into view */
+    .tc-fg-1, .tc-fg-2, .tc-fg-3 { animation-play-state: paused; }
+    .tc-word-1::before, .tc-word-2::before, .tc-word-3::before { animation-play-state: paused; }
+
+    /* Assign animation names + duration when paused (play-state overrides) */
+    .tc-fg-1 { animation: tc-fg-1 8s infinite; }
+    .tc-fg-2 { animation: tc-fg-2 8s infinite; }
+    .tc-fg-3 { animation: tc-fg-3 8s infinite; }
+    .tc-word-1::before { animation: tc-bg-1 8s infinite; }
+    .tc-word-2::before { animation: tc-bg-2 8s infinite; }
+    .tc-word-3::before { animation: tc-bg-3 8s infinite; }
+
+    /* .playing class added by IntersectionObserver when section is in viewport */
+    .tc-section.playing .tc-fg-1,
+    .tc-section.playing .tc-fg-2,
+    .tc-section.playing .tc-fg-3,
+    .tc-section.playing .tc-word-1::before,
+    .tc-section.playing .tc-word-2::before,
+    .tc-section.playing .tc-word-3::before {
+      animation-play-state: running;
+    }
+
+    /* ─── TIMELINE (ported from release-time-line.tsx) ─── */
+    /* Scroll-proximity detection via rAF + getBoundingClientRect             */
+    /* Grid-row collapse mirrors: grid-rows-[0fr]→[1fr] + opacity transition  */
+
+    .tl-section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .tl-section-head { max-width: 720px; margin-bottom: 64px; }
+    .tl-section-head h2 {
+      font-family: var(--syne); font-weight: 800; font-size: 42px;
+      letter-spacing: -2px; line-height: 1.1; color: var(--text); margin-bottom: 14px;
+    }
+    .tl-section-head p { font-size: 17px; color: var(--text); line-height: 1.7; }
+
+    /* Entries wrapper — mirrors: space-y-16 md:space-y-24, max-w-3xl */
+    .tl-entries { max-width: 760px; display: flex; flex-direction: column; gap: 56px; }
+
+    /* Each entry row — mirrors: flex flex-col gap-4 md:flex-row md:gap-16 */
+    .tl-entry {
+      position: relative;
+      display: flex; flex-direction: row; gap: 48px; align-items: flex-start;
+    }
+
+    /* Sentinel — invisible element near title used for viewport-center proximity calc */
+    /* Mirrors: absolute -top-24 left-0 h-12 w-12 opacity-0                          */
+    .tl-sentinel {
+      position: absolute; top: -96px; left: 0;
+      width: 12px; height: 48px; opacity: 0; pointer-events: none;
+    }
+
+    /* Meta column — mirrors: w-64 shrink-0 sticky top-8 h-min */
+    .tl-meta {
+      width: 220px; flex-shrink: 0;
+      position: sticky; top: 80px; height: min-content;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    /* Icon — mirrors: p-2 rounded-lg bg-muted/bg-primary transition */
+    .tl-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      background: var(--elevated); color: var(--text);
+      transition: background .25s ease, color .25s ease;
+    }
+    .tl-entry.active .tl-icon { background: var(--accent); color: #fff; }
+
+    .tl-meta-title {
+      display: block; font-size: 14px; font-weight: 600; color: var(--text);
+      line-height: 1.3;
+    }
+    .tl-meta-sub {
+      display: block; font-size: 12px; color: var(--text); margin-top: 2px;
+      opacity: 0.55;
+    }
+
+    /* Card — mirrors: rounded-2xl border p-3 transition-all duration-300 */
+    .tl-card {
+      flex: 1; border-radius: 16px; border: 1px solid var(--border);
+      padding: 20px; background: var(--card);
+      transition: border-color .3s ease, box-shadow .3s ease;
+    }
+    .tl-entry.active .tl-card {
+      border-color: rgba(232,90,58,.35);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+
+    /* Card title — mirrors: text-md font-medium transition-colors text-foreground/70 → text-foreground */
+    .tl-card-title {
+      font-family: var(--syne); font-weight: 700; font-size: 17px;
+      letter-spacing: -.3px; color: var(--text);
+      margin-bottom: 8px; opacity: 0.65;
+      transition: opacity .2s ease;
+    }
+    .tl-entry.active .tl-card-title { opacity: 1; }
+
+    /* Description — mirrors: text-xs line-clamp-2 → line-clamp-none */
+    .tl-card-desc {
+      font-size: 14px; color: var(--text); line-height: 1.65;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all .3s ease;
+    }
+    .tl-entry.active .tl-card-desc {
+      -webkit-line-clamp: unset; overflow: visible;
+    }
+
+    /* Expandable section — mirrors: grid grid-rows-[0fr]→[1fr] opacity-0→1 duration-500 */
+    .tl-expand {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows .5s ease, opacity .35s ease;
+    }
+    .tl-entry.active .tl-expand {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .tl-expand-inner { overflow: hidden; }
+
+    /* Items list — mirrors: rounded-lg border bg-gray-50 dark:bg-black p-4 space-y-2 */
+    .tl-items-wrap {
+      margin-top: 16px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg);
+      padding: 16px;
+    }
+    .tl-items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .tl-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text); line-height: 1.6;
+    }
+    .tl-item-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+    }
+
+    /* CTA button inside card — mirrors Button variant=default size=sm */
+    .tl-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px;
+      background: var(--accent); color: #fff;
+      padding: 9px 18px; border-radius: 8px;
+      font-family: var(--manrope); font-weight: 700; font-size: 13px;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .tl-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,90,58,.3); background: var(--accent-lt); color: #fff; }
+    .tl-btn svg { transition: transform .2s ease; }
+    .tl-btn:hover svg { transform: translate(2px, -2px); }
+
+    /* Mobile: stack meta above card */
+    @media (max-width: 700px) {
+      .tl-entry { flex-direction: column; gap: 12px; }
+      .tl-meta { position: static; width: 100%; }
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page { padding: 0 20px; }
+      .store-title-inner { flex-direction: column; gap: 16px; }
+      .store-name { font-size: 36px; }
+      .cat-nav-inner { padding: 0 20px; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .prod-card.tall .prod-visual { height: 260px; }
+      .twoup-grid, .help-grid, .diff-grid, .promo-grid { grid-template-columns: 1fr; }
+      .quick-links-inner { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain"></div>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement">
+    <p>Hotline AI is now handling leads 24/7 for franchise dealerships. &nbsp;<a href="consult.html">Book a Consultation →</a></p>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+        <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+      </svg>
+      <span class="nav-wm">HOTLINE <em>AI</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#platform">Platform</a>
+      <a href="#how">How It Works</a>
+      <a href="#why">Why Hotline AI</a>
+      <a href="#who">Who It's For</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="nav-search" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <a href="consult.html" class="nav-cta">Book a Consultation</a>
+    </div>
+  </nav>
+
+  <!-- STORE TITLE -->
+  <div class="store-title">
+    <!-- ShimmerText background element — ported from shimmer-text.tsx (motion/react → CSS) -->
+    <div class="shimmer-bg-wrap" aria-hidden="true">
+      <div class="shimmer-bg-text">HOTLINE AI</div>
+    </div>
+    <div class="page">
+      <div class="store-title-inner">
+        <div class="store-name">HOTLINE <em>AI</em></div>
+        <div class="store-tagline">
+          <p>The AI BDC agent for automotive dealerships. Your leads answered in under 60 seconds — every lead, every hour.</p>
+          <div class="store-tagline-links">
+            <a href="consult.html" class="store-link">Book a Consultation <span>›</span></a>
+            <a href="consult.html" class="store-link">Contact us directly <span>›</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY NAV -->
+  <div class="cat-nav">
+    <div class="cat-nav-inner">
+      <a href="#platform" class="cat-link active">Speed to Lead</a>
+      <a href="#platform" class="cat-link">Full Conversation</a>
+      <a href="#platform" class="cat-link">Appointment Booking</a>
+      <a href="#why" class="cat-link">CRM-Native</a>
+      <a href="#why" class="cat-link">TCPA Compliant</a>
+      <a href="#who" class="cat-link">Who It's For</a>
+      <a href="consult.html" class="cat-link">Consultation</a>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══════════════════════════════════════════════
+         PLATFORM — 3 featured cards
+    ══════════════════════════════════════════════ -->
+    <div class="section-head" id="platform">
+      <div class="section-eyebrow">The platform.</div>
+      <div class="section-caption">Take a look at how Hotline AI works, right now.</div>
+    </div>
+
+    <div class="featured-grid">
+
+      <!-- Card 1: Speed to Lead (tall, left) -->
+      <div class="prod-card tall">
+        <div class="prod-visual vis-orange" style="height:380px;">
+          <div class="vis-sms">
+            <div class="vis-sms-time">Lead submitted · 9:47 PM Saturday</div>
+            <div class="bubble bubble-in">Hi, I'm interested in the 2025 Acura RDX — is it still available?</div>
+            <div class="bubble bubble-out">Hi Michael! Yes, the 2025 RDX is in stock. Can you come in this week or weekend? — Ramsey Acura</div>
+            <div class="bubble bubble-in">Saturday morning works!</div>
+            <div class="bubble bubble-out">10am Saturday is open — want me to hold that for you?</div>
+            <div class="vis-badge">⚡ Sent in 38 seconds</div>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-eyebrow">Speed to Lead</div>
+          <div class="prod-name">First reply in under 60 seconds.</div>
+          <div class="prod-desc">After-hours, weekends, holidays — every lead gets a personal SMS back in under a minute. No BDC rep required.</div>
+          <a href="#how" class="prod-link">See how it works ›</a>
+        </div>
+      </div>
+
+      <!-- Card 2: Full Conversation (top right) -->
+      <div class="prod-card">
+        <div class="prod-visual vis-dark">
+          <div class="vis-stat">
+            <div class="vis-stat-num">2<em>-Way</em></div>
+            <div class="vis-stat-sub">Full SMS Conversation</div>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-eyebrow">Full Conversation</div>
+          <div class="prod-name">Not just a first text. The whole thread.</div>
+          <div class="prod-desc">Hotline AI qualifies intent, answers objections, and proposes real appointment times — autonomously.</div>
+          <a href="#why" class="prod-link">Learn more ›</a>
+        </div>
+      </div>
+
+      <!-- Card 3: Always On (bottom right) -->
+      <div class="prod-card">
+        <div class="prod-visual vis-green">
+          <div class="vis-log">
+            <div class="log-row">
+              <div class="log-dot green"></div>
+              <span class="log-label">Lead detected</span>
+              <span class="log-time">9:47 PM</span>
+            </div>
+            <div class="log-row">
+              <div class="log-dot green"></div>
+              <span class="log-label">TCPA verified</span>
+              <span class="log-time">9:47 PM</span>
+            </div>
+            <div class="log-row">
+              <div class="log-dot green"></div>
+              <span class="log-label">SMS sent &lt;60s</span>
+              <span class="log-time">9:47 PM</span>
+            </div>
+            <div class="log-row">
+              <div class="log-dot orange"></div>
+              <span class="log-label">Appt. booked</span>
+              <span class="log-time">9:54 PM</span>
+            </div>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-eyebrow">Always On</div>
+          <div class="prod-name">24/7 coverage. Zero missed leads.</div>
+          <div class="prod-desc">The AI doesn't sleep, doesn't get distracted, and doesn't miss a lead. Every source, every hour.</div>
+          <a href="consult.html" class="prod-link">Book a Consultation ›</a>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         TEXT COLOR CYCLE — ported from text-color.tsx
+         Scroll-triggered: IntersectionObserver adds .playing
+    ══════════════════════════════════════════════ -->
+  </div><!-- close .page before full-width section -->
+
+  <section class="tc-section" aria-label="What Hotline AI does">
+    <div class="tc-inner">
+      <!-- Corner plus marks — mirrors <Plus className="absolute -left-4 -top-4 h-8 w-8 text-indigo-500"> -->
+      <span class="tc-plus tl" aria-hidden="true"></span>
+      <span class="tc-plus tr" aria-hidden="true"></span>
+      <span class="tc-plus bl" aria-hidden="true"></span>
+      <span class="tc-plus br" aria-hidden="true"></span>
+
+      <h2 class="tc-h" aria-label="Lead arrives. AI responds. Deal closed.">
+        <!-- Word 1 — gradient-foreground-1 / gradient-background-1 -->
+        <span class="tc-word tc-word-1" data-content="Lead arrives.">
+          <span class="tc-fg tc-fg-1">Lead arrives.</span>
+        </span>
+
+        <!-- Word 2 — gradient-foreground-2 / gradient-background-2 -->
+        <span class="tc-word tc-word-2" data-content="AI responds.">
+          <span class="tc-fg tc-fg-2">AI responds.</span>
+        </span>
+
+        <!-- Word 3 — gradient-foreground-3 / gradient-background-3 -->
+        <span class="tc-word tc-word-3" data-content="Deal closed.">
+          <span class="tc-fg tc-fg-3">Deal closed.</span>
+        </span>
+      </h2>
+    </div>
+  </section>
+
+  <div class="page"><!-- reopen .page -->
+
+    <!-- ══════════════════════════════════════════════
+         THE GAP — Horizontal scroll picks
+    ══════════════════════════════════════════════ -->
+    <div class="section-head" id="gap">
+      <div class="section-eyebrow">The gap.</div>
+      <div class="section-caption">What it's costing your store, right now.</div>
+    </div>
+
+    <div class="picks-section">
+      <div class="picks-scroll-wrapper">
+        <div class="picks-track">
+
+          <div class="pick-card">
+            <div class="pick-visual" style="background:linear-gradient(145deg,#1a1a1a,#111);">
+              <div class="pick-num" style="color:var(--muted);">34<em>h</em></div>
+            </div>
+            <div class="pick-info">
+              <div class="pick-label">Industry Average</div>
+              <div class="pick-title">34-hour response time</div>
+              <div class="pick-desc">The average time a dealership takes to reply to an inbound internet lead. Your competitor is just as slow — until they're not.</div>
+            </div>
+          </div>
+
+          <div class="pick-card">
+            <div class="pick-visual" style="background:linear-gradient(145deg,#120a08,#1a0e0a);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,90,58,.2) 0%,transparent 65%);"></div>
+              <div class="pick-num" style="position:relative;z-index:1;"><em>&lt;60</em>s</div>
+            </div>
+            <div class="pick-info">
+              <div class="pick-label">With Hotline AI</div>
+              <div class="pick-title">Under 60 seconds, always</div>
+              <div class="pick-desc">First SMS out in under a minute. Every lead, every hour. Day or night, no matter when the form submits.</div>
+            </div>
+          </div>
+
+          <div class="pick-card">
+            <div class="pick-visual" style="background:linear-gradient(145deg,#0e0e14,#12121e);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,90,58,.18) 0%,transparent 65%);"></div>
+              <div style="position:relative;z-index:1;text-align:center;">
+                <div class="pick-num" style="color:var(--text);font-size:52px;">After<br><em>Hours</em></div>
+              </div>
+            </div>
+            <div class="pick-info">
+              <div class="pick-label">After-Hours Coverage</div>
+              <div class="pick-title">Your BDC closes at 8 PM. Your leads don't stop coming in.</div>
+              <div class="pick-desc">Hotline AI runs 24/7 — nights, weekends, and holidays. Every lead that hits after hours gets a text back in under 60 seconds. None of them wait until morning.</div>
+            </div>
+          </div>
+
+          <div class="pick-card">
+            <div class="pick-visual" style="background:linear-gradient(145deg,#111,#1a1a1a);">
+              <div class="pick-num" style="font-size:44px;letter-spacing:-2px;color:var(--muted);">$0<br><span style="font-size:18px;color:var(--accent);letter-spacing:-1px;">extra</span></div>
+            </div>
+            <div class="pick-info">
+              <div class="pick-label">Headcount</div>
+              <div class="pick-title">No new hires. No training.</div>
+              <div class="pick-desc">Hotline AI is a fixed cost. No hiring, no onboarding, no turnover. Your current team shows up to close.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         TWO MODES — Two-up section
+    ══════════════════════════════════════════════ -->
+    <div class="section-head">
+      <div class="section-eyebrow">Control.</div>
+      <div class="section-caption">Two modes. Your BDC team stays in charge.</div>
+    </div>
+
+    <div class="twoup">
+      <div class="twoup-grid">
+
+        <div class="twoup-card">
+          <div class="twoup-visual" style="background:linear-gradient(145deg,#111,#1a1a1a);">
+            <div class="vis-large-text">
+              <div class="big">Approve <em>Mode</em></div>
+              <div class="small">Review every draft before it sends</div>
+            </div>
+          </div>
+          <div class="twoup-info">
+            <div class="twoup-eyebrow">Mode 1</div>
+            <div class="twoup-name">Your BDC reviews. AI drafts.</div>
+            <div class="twoup-desc">Hotline AI writes every reply. Your BDC rep reviews and approves before it sends. Full control — zero response pressure. The AI does the work, your team makes the call.</div>
+            <a href="consult.html" class="twoup-link">Get started ›</a>
+          </div>
+        </div>
+
+        <div class="twoup-card">
+          <div class="twoup-visual" style="background:linear-gradient(145deg,#120a08,#1a0e0a);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,90,58,.15) 0%,transparent 65%);"></div>
+            <div class="vis-large-text">
+              <div class="big"><em>Monitor</em> Mode</div>
+              <div class="small">AI runs autonomously — you watch</div>
+            </div>
+          </div>
+          <div class="twoup-info">
+            <div class="twoup-eyebrow">Mode 2</div>
+            <div class="twoup-name">AI runs the thread. You close the deal.</div>
+            <div class="twoup-desc">Hotline AI handles the full conversation from first contact to appointment confirmed. Your BDC watches the live thread and jumps in only when they're ready to close. Every lead covered, every hour.</div>
+            <a href="consult.html" class="twoup-link">Learn more ›</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         TIMELINE — ported from release-time-line.tsx
+         Scroll-proximity: rAF measures sentinel distance
+         to viewport center, sets .active on closest entry
+    ══════════════════════════════════════════════ -->
+    <hr class="section-sep" />
+    <section class="tl-section" id="how-it-works">
+      <div class="tl-section-head">
+        <h2>How Hotline AI works.</h2>
+        <p>From the moment a lead arrives to the appointment being booked — here's exactly what happens, step by step.</p>
+      </div>
+
+      <div class="tl-entries">
+
+        <!-- Entry 1 — mirrors TimeLine_01Entry {icon: Package, ...} -->
+        <div class="tl-entry active" data-tl-index="0">
+          <div class="tl-sentinel" aria-hidden="true"></div>
+
+          <!-- Meta column — mirrors: sticky w-64 shrink-0 -->
+          <div class="tl-meta">
+            <div class="tl-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <span class="tl-meta-title">Lead Arrives</span>
+              <span class="tl-meta-sub">Step 01 — Detection</span>
+            </div>
+          </div>
+
+          <!-- Content card -->
+          <article class="tl-card" aria-current="true">
+            <h3 class="tl-card-title">Lead Arrives</h3>
+            <p class="tl-card-desc">An inbound internet lead hits your CRM — from your website, Cars.com, AutoTrader, or any source. Nothing changes on your end. Hotline AI is already watching.</p>
+            <div class="tl-expand">
+              <div class="tl-expand-inner">
+                <div class="tl-items-wrap">
+                  <ul class="tl-items">
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Lead captured from any source feeding your CRM</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Vehicle of interest and customer data extracted instantly</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>TCPA consent verified in real-time before any outreach</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>DND registry checked — you're never exposed</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Entry 2 — mirrors TimeLine_01Entry {icon: Zap, ...} -->
+        <div class="tl-entry" data-tl-index="1">
+          <div class="tl-sentinel" aria-hidden="true"></div>
+          <div class="tl-meta">
+            <div class="tl-icon" aria-hidden="true">
+              <!-- Hotline AI bolt icon — mirrors Zap from lucide-react -->
+              <svg width="16" height="16" viewBox="0 0 48 48" fill="none">
+                <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div>
+              <span class="tl-meta-title">AI Responds &lt;60s</span>
+              <span class="tl-meta-sub">Step 02 — Instant Outreach</span>
+            </div>
+          </div>
+          <article class="tl-card">
+            <h3 class="tl-card-title">AI Responds in Under 60 Seconds</h3>
+            <p class="tl-card-desc">Hotline AI fires a personalized SMS in under 60 seconds — with the customer's name, the vehicle they inquired about, and a question that opens the conversation.</p>
+            <div class="tl-expand">
+              <div class="tl-expand-inner">
+                <div class="tl-items-wrap">
+                  <ul class="tl-items">
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Personalized with customer name and vehicle of interest</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>First SMS out in under 60 seconds, every time</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Sent from your store's number — seamless to the customer</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Works 24/7 — nights, weekends, and holidays without exception</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Entry 3 — mirrors TimeLine_01Entry {icon: Sparkles, ...} -->
+        <div class="tl-entry" data-tl-index="2">
+          <div class="tl-sentinel" aria-hidden="true"></div>
+          <div class="tl-meta">
+            <div class="tl-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div>
+              <span class="tl-meta-title">Full Conversation</span>
+              <span class="tl-meta-sub">Step 03 — AI Qualifies</span>
+            </div>
+          </div>
+          <article class="tl-card">
+            <h3 class="tl-card-title">AI Runs the Full Thread</h3>
+            <p class="tl-card-desc">Hotline AI doesn't just send a first text — it runs the entire conversation. Answers objections, qualifies intent, and proposes real appointment times from your store's calendar.</p>
+            <div class="tl-expand">
+              <div class="tl-expand-inner">
+                <div class="tl-items-wrap">
+                  <ul class="tl-items">
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Answers customer questions about inventory and availability</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Qualifies purchase intent and timeline naturally in conversation</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Handles objections — "just browsing", "not ready yet", "checking prices"</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Proposes real appointment times from your actual calendar</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Entry 4 — mirrors TimeLine_01Entry {icon: Calendar, button: {...}} -->
+        <div class="tl-entry" data-tl-index="3">
+          <div class="tl-sentinel" aria-hidden="true"></div>
+          <div class="tl-meta">
+            <div class="tl-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <span class="tl-meta-title">BDC Closes the Deal</span>
+              <span class="tl-meta-sub">Step 04 — Handoff</span>
+            </div>
+          </div>
+          <article class="tl-card">
+            <h3 class="tl-card-title">Appointment Booked. Your Team Takes Over.</h3>
+            <p class="tl-card-desc">Appointment confirmed and logged in your CRM. Your BDC rep gets the full conversation thread with context — customer name, vehicle, intent, and what was said. They show up to close.</p>
+            <div class="tl-expand">
+              <div class="tl-expand-inner">
+                <div class="tl-items-wrap">
+                  <ul class="tl-items">
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Appointment confirmed to the customer via SMS</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Automatically logged in your CRM — no manual entry</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>BDC rep receives the full thread with complete context</span></li>
+                    <li class="tl-item"><span class="tl-item-dot"></span><span>Your team shows up to close — not to qualify from scratch</span></li>
+                  </ul>
+                </div>
+                <!-- Button — mirrors: Button variant=default asChild + ArrowUpRight icon -->
+                <a href="consult.html" class="tl-btn">
+                  See it in action
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         THE HOTLINE AI DIFFERENCE (Apple "difference")
+    ══════════════════════════════════════════════ -->
+    <div class="section-head" id="why">
+      <div class="section-eyebrow">The Hotline AI difference.</div>
+      <div class="section-caption">Even more reasons to choose Hotline AI.</div>
+    </div>
+
+    <div class="diff-section">
+      <div class="diff-grid">
+
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E85A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="diff-title">CRM-Native</div>
+          <p class="diff-body">We don't bolt onto your CRM — we live inside it. Every lead pull, appointment, and conversation log stays in your system. Nothing ever leaves. No third-party data storage.</p>
+          <a href="consult.html" class="diff-link">Book a Consultation ›</a>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E85A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="diff-title">Full Conversation — Not Just a First Text</div>
+          <p class="diff-body">Generic tools send one SMS and hand off. Hotline AI runs the entire thread — answers objections, qualifies intent, proposes real appointment times, and books the slot.</p>
+          <a href="#how" class="diff-link">How it works ›</a>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E85A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="diff-title">TCPA Compliant by Design</div>
+          <p class="diff-body">Opt-in verified. DND registry checked. Before every single message. Not a checkbox bolted on — baked into the system. Your legal team will approve it before it goes live.</p>
+          <a href="consult.html" class="diff-link">Talk to our team ›</a>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         HELP IS HERE — Consultation (Apple "Help is here")
+    ══════════════════════════════════════════════ -->
+    <div class="section-head" id="consult">
+      <div class="section-eyebrow">Consultation.</div>
+      <div class="section-caption">However you want to connect, we're here.</div>
+    </div>
+
+    <div class="help-section">
+      <div class="help-grid">
+
+        <div class="help-card primary">
+          <div class="help-eyebrow">Book a 1-on-1 Call</div>
+          <div class="help-title">Talk to our team about your store.</div>
+          <p class="help-body">20 minutes. We'll show you the integration live, walk through the economics, and answer every question before you commit to anything.</p>
+          <a href="consult.html" class="help-cta">Book a Consultation</a>
+        </div>
+
+        <div class="help-card">
+          <div class="help-eyebrow">Email Us Directly</div>
+          <div class="help-title">Prefer to reach out on your own time?</div>
+          <p class="help-body">Drop us a line and we'll respond same day. Ask anything — setup, integration, TCPA, pricing, compatibility with your specific CRM setup.</p>
+          <a href="consult.html" class="help-cta outline">aarteaga@gethotlineai.com</a>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         WHO IT'S FOR — Promo tiles (Apple "Savings")
+    ══════════════════════════════════════════════ -->
+    <div class="section-head" id="who">
+      <div class="section-eyebrow">Who it's for.</div>
+      <div class="section-caption">Built for the GM who knows their BDC is the leak.</div>
+    </div>
+
+    <div class="promo-section">
+      <div class="promo-grid">
+
+        <div class="promo-card">
+          <div class="promo-visual" style="background:linear-gradient(145deg,#111,#1a1a1a);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,90,58,.1) 0%,transparent 65%);"></div>
+            <div class="promo-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E85A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+          </div>
+          <div class="promo-info">
+            <div class="promo-title">Franchise Dealers on a Major CRM</div>
+            <p class="promo-body">Single rooftop or multi-store — if internet leads hit your CRM, Hotline AI can respond to all of them.</p>
+            <a href="consult.html" class="promo-link">See if you qualify ›</a>
+          </div>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-visual" style="background:linear-gradient(145deg,#0d140d,#111);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(34,197,94,.1) 0%,transparent 65%);"></div>
+            <div class="promo-icon" style="background:rgba(34,197,94,.12);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+          <div class="promo-info">
+            <div class="promo-title">GM or Owner Who Wants to Fix the Leak</div>
+            <p class="promo-body">You know your BDC is the problem. You don't want to add headcount. Hotline AI fixes it without disrupting what works.</p>
+            <a href="consult.html" class="promo-link">Book a Consultation ›</a>
+          </div>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-visual" style="background:linear-gradient(145deg,#111,#1a1a1a);">
+            <div class="promo-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E85A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+          </div>
+          <div class="promo-info">
+            <div class="promo-title">High-Volume Internet Lead Operations</div>
+            <p class="promo-body">If you're running 50+ internet leads a month and your response rate isn't where it should be, this is for you.</p>
+            <a href="consult.html" class="promo-link">Talk to us ›</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- ══════════════════════════════════════════════
+         QUICK LINKS (Apple's Quick Links)
+    ══════════════════════════════════════════════ -->
+    <div class="quick-links">
+      <div class="quick-links-inner">
+        <a href="consult.html" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Book a Consultation
+        </a>
+        <a href="#platform" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Speed to Lead
+        </a>
+        <a href="#why" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          CRM-Native
+        </a>
+        <a href="#why" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          TCPA Compliant
+        </a>
+        <a href="#who" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Who It's For
+        </a>
+        <a href="consult.html" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /.page -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="page">
+      <div class="footer-top">
+        <p>Copyright © 2026 AAL Ventures LLC. All rights reserved. &nbsp;|&nbsp; <a href="consult.html">aarteaga@gethotlineai.com</a> &nbsp;|&nbsp; gethotlineai.com &nbsp;|&nbsp; New York, NY</p>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+            <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+          </svg>
+          <span class="footer-wm">HOTLINE <em>AI</em></span>
+        </div>
+        <div class="footer-links">
+          <a href="#platform">Platform</a>
+          <a href="#why">Why Hotline AI</a>
+          <a href="#who">Who It's For</a>
+          <a href="consult.html">Consultation</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <p>Hotline AI is an AI-powered SMS BDC agent for automotive dealerships. All conversations are TCPA compliant. Opt-in verification and DND registry checks are performed before every message. No customer data is stored outside your CRM system. AAL Ventures LLC is a registered business entity in the State of New York.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // TimeLine_01 — ported from release-time-line.tsx
+    // Uses requestAnimationFrame (mirrors the useEffect rAF loop in the React component)
+    // Each sentinel's distance to viewport 1/3 is measured; closest = active
+    (function() {
+      const tlEntries   = Array.from(document.querySelectorAll('.tl-entry'));
+      const tlSentinels = Array.from(document.querySelectorAll('.tl-sentinel'));
+      const tlSection   = document.querySelector('.tl-section');
+      if (!tlEntries.length || !tlSection) return;
+
+      let tlActive = 0;
+      let rafId    = null;
+
+      function setActive(index) {
+        if (index === tlActive) return;
+        tlActive = index;
+        tlEntries.forEach((el, i) => {
+          el.classList.toggle('active', i === index);
+          const card = el.querySelector('.tl-card');
+          if (card) card.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+      }
+
+      // Core loop — mirrors: const updateActiveByProximity = () => { frame = requestAnimationFrame(...) }
+      function loop() {
+        const centerY = window.innerHeight / 3; // mirrors: window.innerHeight / 3
+        let bestIndex = 0, bestDist = Infinity;
+        tlSentinels.forEach((node, i) => {
+          const rect = node.getBoundingClientRect();
+          const mid  = rect.top + rect.height / 2;
+          const dist = Math.abs(mid - centerY);
+          if (dist < bestDist) { bestDist = dist; bestIndex = i; }
+        });
+        setActive(bestIndex);
+        rafId = requestAnimationFrame(loop);
+      }
+
+      // Only run rAF when section is in viewport — saves battery/CPU
+      // Mirrors the IntersectionObserver wrapper around the useEffect
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            rafId = requestAnimationFrame(loop);
+          } else {
+            cancelAnimationFrame(rafId);
+          }
+        });
+      }, { threshold: 0.01 });
+
+      io.observe(tlSection);
+
+      // mirrors: useEffect(() => { setActiveIndex(0); }, []);
+      tlEntries[0].classList.add('active');
+    })();
+
+    // TextColor scroll trigger — mirrors IntersectionObserver pattern from React
+    // Adds .playing when section enters viewport (starts animation), removes when leaving
+    const tcSection = document.querySelector('.tc-section');
+    if (tcSection) {
+      const tcObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            tcSection.classList.add('playing');
+          } else {
+            tcSection.classList.remove('playing');
+            // Reset animation phase so next entry starts from word 1
+            tcSection.querySelectorAll('.tc-fg-1,.tc-fg-2,.tc-fg-3,.tc-word-1::before,.tc-word-2::before,.tc-word-3::before').forEach(el => {
+              el.style.animationName = 'none';
+              requestAnimationFrame(() => { el.style.animationName = ''; });
+            });
+          }
+        });
+      }, { threshold: 0.15 });
+      tcObs.observe(tcSection);
+    }
+
+    // Category nav active state on scroll
+    const sections = document.querySelectorAll('[id]');
+    const catLinks = document.querySelectorAll('.cat-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      catLinks.forEach(l => {
+        l.classList.remove('active');
+        if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
