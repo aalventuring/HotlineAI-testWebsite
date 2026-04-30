@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Hotline AI</title>
+  <meta name="description" content="Terms of Service for Hotline AI, an AI-powered SMS BDC agent by AAL Ventures LLC." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0A0A0A;
+      --card:      #161616;
+      --elevated:  #1E1E1E;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #E85A3A;
+      --accent-lt: #FF6B4A;
+      --text:      #F2F2F2;
+      --muted:     #F2F2F2;
+      --syne:      'Syne', 'Arial Black', sans-serif;
+      --manrope:   'Manrope', 'Helvetica Neue', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--manrope); font-size: 17px; line-height: 1.5;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── GRAIN ─── */
+    .grain {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 500;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10,10,10,0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 9px; }
+    .nav-logo svg { width: 26px; height: 26px; }
+    .nav-wm { font-family: var(--syne); font-weight: 800; font-size: 14px; letter-spacing: -0.4px; }
+    .nav-wm em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 18px; border-radius: 980px;
+      font-size: 13px; font-weight: 700; letter-spacing: -0.1px;
+      transition: background .2s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--accent-lt); transform: scale(1.02); color: #fff; }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page { max-width: 760px; margin: 0 auto; padding: 0 40px; }
+
+    /* ─── HERO ─── */
+    .doc-hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-eyebrow {
+      font-family: var(--manrope); font-weight: 700; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .doc-title {
+      font-family: var(--syne); font-weight: 800;
+      font-size: clamp(36px, 5vw, 52px);
+      letter-spacing: -2px; line-height: 1.05;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .doc-meta {
+      font-size: 13px; color: rgba(242,242,242,0.5); font-weight: 500;
+    }
+
+    /* ─── CONTENT ─── */
+    .doc-body {
+      padding: 56px 0 80px;
+    }
+    .doc-body h2 {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 22px; letter-spacing: -0.8px; line-height: 1.25;
+      color: var(--text); margin-top: 52px; margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-body h2:first-child { margin-top: 0; }
+    .doc-body h3 {
+      font-family: var(--syne); font-weight: 700;
+      font-size: 16px; letter-spacing: -0.4px;
+      color: var(--text); margin-top: 28px; margin-bottom: 10px;
+    }
+    .doc-body p {
+      font-size: 15px; color: var(--text); line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .doc-body ul {
+      list-style: none; margin-bottom: 16px; padding: 0;
+    }
+    .doc-body ul li {
+      font-size: 15px; color: var(--text); line-height: 1.8;
+      padding-left: 20px; position: relative; margin-bottom: 6px;
+    }
+    .doc-body ul li::before {
+      content: ''; position: absolute; left: 0; top: 11px;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .doc-body a { color: var(--accent); font-weight: 500; }
+    .doc-body a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    .highlight-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px; padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p { margin-bottom: 0; font-size: 14px; color: rgba(242,242,242,0.7); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 36px 0 28px;
+    }
+    .footer-top { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .footer-top p { font-size: 13px; color: rgba(242,242,242,0.5); line-height: 1.5; }
+    .footer-top a { color: var(--accent); font-weight: 500; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo svg { width: 24px; height: 24px; }
+    .footer-wm { font-family: var(--syne); font-weight: 800; font-size: 13px; letter-spacing: -0.3px; }
+    .footer-wm em { color: var(--accent); font-style: normal; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: rgba(242,242,242,0.5); transition: color .2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-legal { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .footer-legal p { font-size: 11px; color: #3a3a3a; line-height: 1.8; }
+    .footer-legal a { color: #555; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page { padding: 0 20px; }
+      .doc-hero { padding: 48px 0 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+        <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+      </svg>
+      <span class="nav-wm">HOTLINE <em>AI</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#how">How It Works</a>
+      <a href="/#why">Why Hotline AI</a>
+      <a href="/#who">Who It's For</a>
+    </div>
+    <a href="/consult.html" class="nav-cta">Book a Consultation</a>
+  </nav>
+
+  <div class="page">
+    <div class="doc-hero">
+      <p class="doc-eyebrow">Legal</p>
+      <h1 class="doc-title">Terms of Service</h1>
+      <p class="doc-meta">Effective Date: April 30, 2026 &nbsp;·&nbsp; AAL Ventures LLC</p>
+    </div>
+
+    <div class="doc-body">
+
+      <div class="highlight-box">
+        <p>These Terms of Service ("Terms") govern your access to and use of Hotline AI, provided by AAL Ventures LLC. By executing a service agreement or accessing the platform, you agree to be bound by these Terms.</p>
+      </div>
+
+      <h2>1. Parties and Definitions</h2>
+      <p><strong>"Company," "we," "us," or "our"</strong> means AAL Ventures LLC, a New York limited liability company, operating the Hotline AI service.</p>
+      <p><strong>"Client" or "you"</strong> means the automotive dealership or business entity that enters into a service agreement with AAL Ventures LLC to use Hotline AI.</p>
+      <p><strong>"Service"</strong> means the Hotline AI AI-powered two-way SMS BDC platform, including all associated software, integrations, and support.</p>
+      <p><strong>"End Users"</strong> means vehicle shoppers and other individuals who interact with the Service through the Client's dealership operations.</p>
+
+      <h2>2. The Service</h2>
+      <p>Hotline AI provides an AI-powered SMS response agent designed for automotive dealerships. The Service enables dealerships to:</p>
+      <ul>
+        <li>Respond to inbound leads via two-way SMS in under 60 seconds</li>
+        <li>Conduct AI-driven qualification conversations with vehicle shoppers</li>
+        <li>Schedule and confirm appointments within the dealership's CRM</li>
+        <li>Maintain TCPA-compliant records of all customer interactions</li>
+      </ul>
+      <p>Service availability, features, and integrations are described in the applicable service agreement executed between you and AAL Ventures LLC. We reserve the right to modify, update, or discontinue features with reasonable notice.</p>
+
+      <h2>3. Client Responsibilities</h2>
+      <p>By using the Service, you agree that you are solely responsible for:</p>
+      <ul>
+        <li>Ensuring all lead collection forms include compliant TCPA express written consent language before deploying Hotline AI</li>
+        <li>Providing accurate and complete lead data for AI processing</li>
+        <li>Maintaining appropriate CRM access credentials and notifying us immediately of any unauthorized access</li>
+        <li>Ensuring your dealership's use of the Service complies with all applicable federal, state, and local laws, including but not limited to the TCPA, CAN-SPAM Act, and applicable state consumer protection laws</li>
+        <li>Not using the Service to contact individuals who have opted out or are on the National Do Not Call Registry without proper authorization</li>
+      </ul>
+
+      <h2>4. TCPA Compliance and Messaging Standards</h2>
+      <p>The Service is designed to assist with TCPA compliance but does not constitute legal advice. You acknowledge that:</p>
+      <ul>
+        <li>You are the initiator of consumer communications for TCPA purposes and bear ultimate legal responsibility for compliance</li>
+        <li>Hotline AI performs DND registry checks and honors opt-out requests, but you must ensure your lead intake process captures proper prior express written consent</li>
+        <li>We will promptly process opt-out requests received through the Service</li>
+        <li>We are not liable for violations arising from your failure to obtain proper consent prior to deployment</li>
+      </ul>
+
+      <h2>5. Fees and Payment</h2>
+      <p>Service fees are as set forth in your executed service agreement. Unless otherwise stated:</p>
+      <ul>
+        <li>Fees are due monthly in advance</li>
+        <li>Payments are non-refundable except as expressly stated in your agreement</li>
+        <li>We reserve the right to suspend service for accounts more than 15 days past due</li>
+        <li>Prices may be adjusted with 30 days' written notice</li>
+      </ul>
+
+      <h2>6. Intellectual Property</h2>
+      <p>The Service, including all software, AI models, interfaces, and documentation, is and remains the exclusive property of AAL Ventures LLC. Nothing in these Terms grants you any ownership rights in the Service.</p>
+      <p>You retain ownership of your dealership data and customer data. You grant us a limited license to process that data solely to provide the Service.</p>
+      <p>You may not copy, reverse engineer, decompile, or create derivative works from any part of the Service.</p>
+
+      <h2>7. Data and Privacy</h2>
+      <p>Our collection and use of personal information is described in our <a href="/privacy-policy">Privacy Policy</a>, which is incorporated into these Terms by reference. By using the Service, you agree to the Privacy Policy.</p>
+      <p>As between the parties, you are the data controller for all End User personal data. We act as a data processor and will process End User data only on your documented instructions and as necessary to provide the Service.</p>
+
+      <h2>8. Confidentiality</h2>
+      <p>Each party agrees to hold the other's Confidential Information in strict confidence and not to disclose it to third parties without prior written consent. Confidential Information includes proprietary pricing, business strategies, AI models, integration configurations, and customer data. This obligation survives termination of the service agreement for 3 years.</p>
+
+      <h2>9. Warranties and Disclaimers</h2>
+      <p>We warrant that the Service will perform materially as described in your service agreement under normal use. EXCEPT AS EXPRESSLY STATED, THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.</p>
+      <p>We do not warrant that the Service will be uninterrupted, error-free, or that any specific results will be achieved (including appointment volume or conversion rates). AI-generated responses may occasionally be imperfect; we recommend maintaining human BDC oversight.</p>
+
+      <h2>10. Limitation of Liability</h2>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL AAL VENTURES LLC BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS OR BUSINESS OPPORTUNITIES, ARISING OUT OF OR RELATED TO THE SERVICE.</p>
+      <p>OUR TOTAL LIABILITY FOR ANY CLAIM ARISING UNDER THESE TERMS SHALL NOT EXCEED THE FEES PAID BY YOU TO US IN THE THREE (3) MONTHS PRECEDING THE CLAIM.</p>
+
+      <h2>11. Indemnification</h2>
+      <p>You agree to indemnify, defend, and hold harmless AAL Ventures LLC and its officers, employees, and agents from any claims, damages, or expenses (including reasonable attorneys' fees) arising from: (a) your use of the Service; (b) your violation of these Terms; (c) your failure to obtain proper TCPA consent; or (d) your violation of any applicable law or third-party rights.</p>
+
+      <h2>12. Term and Termination</h2>
+      <p>These Terms remain in effect for the duration of your service agreement. Either party may terminate for material breach with 30 days' written notice if the breach is not cured within that period. We may suspend or terminate the Service immediately for non-payment or violation of the TCPA compliance provisions.</p>
+      <p>Upon termination, we will make your data available for export for 30 days, after which it will be securely deleted.</p>
+
+      <h2>13. Governing Law and Dispute Resolution</h2>
+      <p>These Terms are governed by the laws of the State of New York, without regard to conflict of law principles. Any dispute arising under these Terms shall be resolved by binding arbitration in New York, NY under the rules of the American Arbitration Association, except that either party may seek injunctive relief in a court of competent jurisdiction to prevent irreparable harm.</p>
+
+      <h2>14. Modifications</h2>
+      <p>We may update these Terms at any time. Material changes will be communicated by email to your account contact with at least 30 days' notice. Continued use of the Service after the effective date constitutes acceptance. If you do not agree to the updated Terms, you may terminate your agreement in accordance with Section 12.</p>
+
+      <h2>15. Contact</h2>
+      <p>Legal notices and questions regarding these Terms should be directed to:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a></li>
+        <li><strong>Website:</strong> <a href="https://gethotlineai.com">gethotlineai.com</a></li>
+        <li><strong>Entity:</strong> AAL Ventures LLC — New York, NY</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="page" style="max-width:1200px;">
+      <div class="footer-top">
+        <p>Copyright © 2026 AAL Ventures LLC. All rights reserved. &nbsp;|&nbsp; <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a> &nbsp;|&nbsp; gethotlineai.com &nbsp;|&nbsp; New York, NY</p>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+            <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+          </svg>
+          <span class="footer-wm">HOTLINE <em>AI</em></span>
+        </div>
+        <div class="footer-links">
+          <a href="/#platform">Platform</a>
+          <a href="/#why">Why Hotline AI</a>
+          <a href="/#who">Who It's For</a>
+          <a href="/consult.html">Consultation</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <p>Hotline AI is an AI-powered SMS BDC agent for automotive dealerships. All conversations are TCPA compliant. Opt-in verification and DND registry checks are performed before every message. No customer data is stored outside your CRM system. AAL Ventures LLC is a registered business entity in the State of New York.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

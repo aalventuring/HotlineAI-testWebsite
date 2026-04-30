@@ -18,16 +18,26 @@ const mimeTypes = {
 };
 
 http.createServer((req, res) => {
-  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
-  const ext = path.extname(filePath);
-  const contentType = mimeTypes[ext] || 'application/octet-stream';
+  const urlPath = req.url.split('?')[0];
+  let filePath = path.join(__dirname, urlPath === '/' ? 'index.html' : urlPath);
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(404); res.end('Not found');
-    } else {
+  const tryPaths = [
+    filePath,
+    filePath + '.html',
+    path.join(filePath, 'index.html'),
+  ];
+
+  const tryNext = (paths) => {
+    if (paths.length === 0) { res.writeHead(404); res.end('Not found'); return; }
+    const [current, ...rest] = paths;
+    fs.readFile(current, (err, data) => {
+      if (err) { tryNext(rest); return; }
+      const ext = path.extname(current);
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(data);
-    }
-  });
+    });
+  };
+
+  tryNext(tryPaths);
 }).listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
