@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Hotline AI</title>
+  <meta name="description" content="Privacy Policy for Hotline AI, an AI-powered SMS BDC agent by AAL Ventures LLC." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0A0A0A;
+      --card:      #161616;
+      --elevated:  #1E1E1E;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #E85A3A;
+      --accent-lt: #FF6B4A;
+      --text:      #F2F2F2;
+      --muted:     #F2F2F2;
+      --syne:      'Syne', 'Arial Black', sans-serif;
+      --manrope:   'Manrope', 'Helvetica Neue', sans-serif;
+      --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--manrope); font-size: 17px; line-height: 1.5;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── GRAIN ─── */
+    .grain {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 500;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10,10,10,0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 9px; }
+    .nav-logo svg { width: 26px; height: 26px; }
+    .nav-wm { font-family: var(--syne); font-weight: 800; font-size: 14px; letter-spacing: -0.4px; }
+    .nav-wm em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 18px; border-radius: 980px;
+      font-size: 13px; font-weight: 700; letter-spacing: -0.1px;
+      transition: background .2s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--accent-lt); transform: scale(1.02); color: #fff; }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page { max-width: 760px; margin: 0 auto; padding: 0 40px; }
+
+    /* ─── HERO ─── */
+    .doc-hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-eyebrow {
+      font-family: var(--manrope); font-weight: 700; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .doc-title {
+      font-family: var(--syne); font-weight: 800;
+      font-size: clamp(36px, 5vw, 52px);
+      letter-spacing: -2px; line-height: 1.05;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .doc-meta {
+      font-size: 13px; color: rgba(242,242,242,0.5); font-weight: 500;
+    }
+
+    /* ─── CONTENT ─── */
+    .doc-body {
+      padding: 56px 0 80px;
+    }
+    .doc-body h2 {
+      font-family: var(--syne); font-weight: 800;
+      font-size: 22px; letter-spacing: -0.8px; line-height: 1.25;
+      color: var(--text); margin-top: 52px; margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-body h2:first-child { margin-top: 0; }
+    .doc-body h3 {
+      font-family: var(--syne); font-weight: 700;
+      font-size: 16px; letter-spacing: -0.4px;
+      color: var(--text); margin-top: 28px; margin-bottom: 10px;
+    }
+    .doc-body p {
+      font-size: 15px; color: var(--text); line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .doc-body ul {
+      list-style: none; margin-bottom: 16px; padding: 0;
+    }
+    .doc-body ul li {
+      font-size: 15px; color: var(--text); line-height: 1.8;
+      padding-left: 20px; position: relative; margin-bottom: 6px;
+    }
+    .doc-body ul li::before {
+      content: ''; position: absolute; left: 0; top: 11px;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .doc-body a { color: var(--accent); font-weight: 500; }
+    .doc-body a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    .highlight-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px; padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p { margin-bottom: 0; font-size: 14px; color: rgba(242,242,242,0.7); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 36px 0 28px;
+    }
+    .footer-top { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .footer-top p { font-size: 13px; color: rgba(242,242,242,0.5); line-height: 1.5; }
+    .footer-top a { color: var(--accent); font-weight: 500; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo svg { width: 24px; height: 24px; }
+    .footer-wm { font-family: var(--syne); font-weight: 800; font-size: 13px; letter-spacing: -0.3px; }
+    .footer-wm em { color: var(--accent); font-style: normal; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: rgba(242,242,242,0.5); transition: color .2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-legal { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .footer-legal p { font-size: 11px; color: #3a3a3a; line-height: 1.8; }
+    .footer-legal a { color: #555; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page { padding: 0 20px; }
+      .doc-hero { padding: 48px 0 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+        <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+      </svg>
+      <span class="nav-wm">HOTLINE <em>AI</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#how">How It Works</a>
+      <a href="/#why">Why Hotline AI</a>
+      <a href="/#who">Who It's For</a>
+    </div>
+    <a href="/consult.html" class="nav-cta">Book a Consultation</a>
+  </nav>
+
+  <div class="page">
+    <div class="doc-hero">
+      <p class="doc-eyebrow">Legal</p>
+      <h1 class="doc-title">Privacy Policy</h1>
+      <p class="doc-meta">Effective Date: April 30, 2026 &nbsp;·&nbsp; AAL Ventures LLC</p>
+    </div>
+
+    <div class="doc-body">
+
+      <div class="highlight-box">
+        <p>This Privacy Policy explains how AAL Ventures LLC ("Hotline AI", "we", "us", or "our") collects, uses, and protects information when we provide our AI-powered SMS BDC service to automotive dealerships and their customers.</p>
+      </div>
+
+      <h2>1. Who We Are</h2>
+      <p>Hotline AI is operated by AAL Ventures LLC, a limited liability company registered in the State of New York. Our registered business address is New York, NY. For privacy inquiries, contact us at <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a>.</p>
+
+      <h2>2. Information We Collect</h2>
+
+      <h3>From Dealership Customers (Vehicle Shoppers)</h3>
+      <p>When a dealership deploys Hotline AI to respond to inbound leads, we may process the following information on behalf of the dealership:</p>
+      <ul>
+        <li>Name and phone number provided in the lead form</li>
+        <li>Vehicle of interest and inquiry details</li>
+        <li>SMS conversation content between the AI agent and the customer</li>
+        <li>Appointment scheduling data</li>
+        <li>Opt-in and opt-out preferences</li>
+      </ul>
+
+      <h3>From Dealership Clients (Business Partners)</h3>
+      <p>When a dealership engages our services, we collect:</p>
+      <ul>
+        <li>Business contact information (name, email, phone, dealership name)</li>
+        <li>CRM integration credentials (handled securely — never stored in plaintext)</li>
+        <li>Billing and payment information (processed by a third-party payment processor)</li>
+        <li>Usage data and service performance metrics</li>
+      </ul>
+
+      <h3>Automatically Collected Data</h3>
+      <p>Our systems may automatically record SMS delivery metadata (timestamps, delivery status) for operational reliability and compliance purposes.</p>
+
+      <h2>3. How We Use Information</h2>
+      <p>We use the information we process to:</p>
+      <ul>
+        <li>Deliver the Hotline AI SMS BDC service on behalf of the dealership</li>
+        <li>Contact inbound leads via two-way SMS within 60 seconds of inquiry submission</li>
+        <li>Schedule and confirm dealership appointments</li>
+        <li>Maintain TCPA compliance records, including opt-in documentation</li>
+        <li>Perform DND (Do-Not-Disturb) registry checks before each outbound message</li>
+        <li>Improve service performance and AI response quality</li>
+        <li>Fulfill billing, support, and account management obligations to dealership clients</li>
+      </ul>
+
+      <h2>4. Data Storage and Retention</h2>
+      <p>Hotline AI is designed to keep customer data within your existing CRM system. <strong>No customer personally identifiable information (PII) is stored outside your dealership's CRM</strong> beyond what is necessary for active conversation handling and compliance logging.</p>
+      <p>TCPA compliance records (opt-in timestamps, opt-out requests, DND check logs) are retained for a minimum of 5 years as required by applicable law.</p>
+      <p>Dealership account data is retained for the duration of the service agreement and for 1 year following termination, unless a shorter deletion period is requested.</p>
+
+      <h2>5. TCPA Compliance</h2>
+      <p>All SMS communications sent by Hotline AI are subject to the Telephone Consumer Protection Act (TCPA). We adhere to the following practices:</p>
+      <ul>
+        <li>We only contact individuals who have provided express written consent to receive SMS communications from the dealership</li>
+        <li>Every outbound SMS session includes a clear opt-out instruction (reply STOP to opt out)</li>
+        <li>Opt-out requests are honored immediately and permanently recorded</li>
+        <li>DND registry checks are performed before every outbound message</li>
+        <li>Dealerships are responsible for ensuring their lead collection forms include compliant TCPA consent language</li>
+      </ul>
+
+      <h2>6. Sharing and Disclosure</h2>
+      <p>We do not sell, rent, or trade personal information. We may share information only in the following circumstances:</p>
+      <ul>
+        <li><strong>With the dealership:</strong> All lead and conversation data is the property of the dealership and is accessible to their authorized staff</li>
+        <li><strong>Service providers:</strong> We may use third-party services for SMS delivery, AI processing, and payment handling — all subject to confidentiality agreements</li>
+        <li><strong>Legal obligations:</strong> We may disclose information when required by law, court order, or to protect our legal rights</li>
+        <li><strong>Business transfers:</strong> In the event of a merger or acquisition, information may be transferred as part of the transaction</li>
+      </ul>
+
+      <h2>7. Security</h2>
+      <p>We implement commercially reasonable administrative, technical, and physical safeguards to protect information against unauthorized access, alteration, or disclosure. This includes:</p>
+      <ul>
+        <li>Encrypted transmission of all data in transit (TLS 1.2+)</li>
+        <li>Access controls limiting data access to authorized personnel only</li>
+        <li>Secure credential handling for CRM integrations</li>
+      </ul>
+      <p>No system is completely secure. In the event of a data breach that triggers notification obligations, we will notify affected parties as required by applicable law.</p>
+
+      <h2>8. Your Rights (California and Other State Residents)</h2>
+      <p>Depending on where you reside, you may have rights regarding your personal information, including the right to access, correct, or delete data we hold about you. To exercise these rights, contact us at <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a>. We will respond within 30 days.</p>
+      <p>If you are a vehicle shopper who received an SMS from a dealership using Hotline AI and wish to opt out or have your data deleted, reply STOP to any message or contact the dealership directly.</p>
+
+      <h2>9. Children's Privacy</h2>
+      <p>Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If we learn that we have inadvertently collected such information, we will delete it promptly.</p>
+
+      <h2>10. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. When we make material changes, we will update the "Effective Date" at the top of this page and notify our dealership clients by email. Continued use of the service after the effective date constitutes acceptance of the updated policy.</p>
+
+      <h2>11. Contact</h2>
+      <p>For privacy questions, requests, or concerns:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a></li>
+        <li><strong>Website:</strong> <a href="https://gethotlineai.com">gethotlineai.com</a></li>
+        <li><strong>Entity:</strong> AAL Ventures LLC — New York, NY</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="page" style="max-width:1200px;">
+      <div class="footer-top">
+        <p>Copyright © 2026 AAL Ventures LLC. All rights reserved. &nbsp;|&nbsp; <a href="mailto:aarteaga@gethotlineai.com">aarteaga@gethotlineai.com</a> &nbsp;|&nbsp; gethotlineai.com &nbsp;|&nbsp; New York, NY</p>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="10" fill="#E85A3A"/>
+            <path d="M28 5L6 27H20L15 44L42 21H28Z" fill="white"/>
+          </svg>
+          <span class="footer-wm">HOTLINE <em>AI</em></span>
+        </div>
+        <div class="footer-links">
+          <a href="/#platform">Platform</a>
+          <a href="/#why">Why Hotline AI</a>
+          <a href="/#who">Who It's For</a>
+          <a href="/consult.html">Consultation</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <p>Hotline AI is an AI-powered SMS BDC agent for automotive dealerships. All conversations are TCPA compliant. Opt-in verification and DND registry checks are performed before every message. No customer data is stored outside your CRM system. AAL Ventures LLC is a registered business entity in the State of New York.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
